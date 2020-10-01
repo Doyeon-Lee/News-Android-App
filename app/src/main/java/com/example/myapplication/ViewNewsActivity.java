@@ -18,9 +18,10 @@ import android.widget.Toast;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 public class ViewNewsActivity extends AppCompatActivity {
-
+/*
     TextView TextView_title, TextView_content, TextView_newsLink;
     SimpleDraweeView SimpleDraweeView_title;
+*/
 
     ImageView ImageView_close;
     WebView webView;
@@ -104,18 +105,7 @@ public class ViewNewsActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        String endString = "'뒤로' 버튼을 한 번 더 누르면 앱을 종료합니다.";
-
-        if(webView.canGoBack()) webView.goBack();
-        else {
-            //2초 이내에 두 번 눌렀다면
-            if (System.currentTimeMillis() - lastTimeBackPressed < 2000)
-                finish();
-            //처음 누른 거라면
-            else {
-                Toast.makeText(this, endString, Toast.LENGTH_SHORT).show();
-                lastTimeBackPressed = System.currentTimeMillis();
-            }
-        }
+        if(webView.canGoBack())
+            webView.goBack();
     }
 }

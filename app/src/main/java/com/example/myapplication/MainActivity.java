@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     String input_email = "";
     String input_password = "";
+    long lastTimeBackPressed = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,8 +135,6 @@ public class MainActivity extends AppCompatActivity {
 
         EditText_email.setHint("email");
         EditText_password.setHint("password");
-        //비밀번호는 디폴트로 보이지 않게 한다
-        EditText_password.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
         //최대 한 줄 설정
         EditText_email.setSingleLine(true);
@@ -144,6 +143,9 @@ public class MainActivity extends AppCompatActivity {
         //생성한 텍스트뷰를 LinearLayout에 추가
         layout.addView(EditText_email);
         layout.addView(EditText_password);
+
+        //비밀번호는 디폴트로 보이지 않게 한다
+        EditText_password.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
         //비밀번호의 visible을 변경하는 체크박스 추가
         final CheckBox checkBox = new CheckBox(this);
@@ -176,5 +178,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
         alert.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        String endString = "'뒤로' 버튼을 한 번 더 누르면 앱을 종료합니다.";
+        if(System.currentTimeMillis() - lastTimeBackPressed < 2000)
+            finish();
+            //super.onBackPressed();
+        else {
+            Toast.makeText(this, endString, Toast.LENGTH_SHORT).show();
+            lastTimeBackPressed = System.currentTimeMillis();
+        }
     }
 }
