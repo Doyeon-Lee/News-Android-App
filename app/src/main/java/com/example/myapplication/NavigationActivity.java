@@ -1,14 +1,21 @@
 package com.example.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.Toast;
 
-public class NavigationActivity extends AppCompatActivity {
+import com.google.android.material.navigation.NavigationView;
+
+public class NavigationActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Toolbar toolbar;
     private DrawerLayout DrawerLayout_nav;
 
@@ -16,13 +23,6 @@ public class NavigationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
-
-
-
-
-
-
-
         toolbar = findViewById(R.id.Toolbar);
         setSupportActionBar(toolbar);
         //This will set out Toolbar as the Actionbar and this will for example place the
@@ -41,6 +41,51 @@ public class NavigationActivity extends AppCompatActivity {
         toggle.syncState(); //햄버거를 화면에 보이게 해 준다
         //This will take care of rotating the hamburger icon together with the drawer itself
 
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        //괄호 안에 new~로 생성할 수도 있지만 가독성을 위해 this 액티비티를 인수로 전달한다.
+        //그러기 위해서는 클래스에ㅔ implement Nav~Listener가 필요한데, 두 가지 중 buttom이
+        //아니라 navigation으로 끝나는 것을 골라야 한다. 그리고 이를 implement하기 위해서는
+        //ctrl+I로 아래의 함수를 선택해 줘야 오류가 없어진다.
+
+        //화면 방향 전환 등이 일어났을 때 보던 프래그먼트를 그대로 보여주기 위해서
+        if (savedInstanceState == null) {
+            //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+            //        new ProfileFragment()).commit(); replace와 add으 차이 빼곤 같은걸까?
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container,
+                    ProfileFragment.newInstance()).commit(); //예시에는 commit없었는데 왜일까?
+            navigationView.setCheckedItem(R.id.nav_profile);
+        }
+    }
+
+    @Override
+    //here we pass the menu item which is the menu that was selected
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()){
+            case R.id.nav_profile:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new ProfileFragment()).commit();
+                break;
+            case R.id.nav_bookmark:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new BookmarkFragment()).commit();
+                break;
+            case R.id.nav_setting:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new SettingFragment()).commit();
+                break;
+            case R.id.nav_share:
+                Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_contact:
+                Toast.makeText(this, "Contact", Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+        DrawerLayout_nav.closeDrawer(GravityCompat.START);
+        return true;
+        //return false means that no item was selected even though the action was triggered
     }
 
     @Override
@@ -48,5 +93,10 @@ public class NavigationActivity extends AppCompatActivity {
         if(DrawerLayout_nav.isDrawerOpen(GravityCompat.START)){
             DrawerLayout_nav.closeDrawer(GravityCompat.START);
         }else super.onBackPressed();
+    }
+
+    public void replaceFragment(Fragment fragment){
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment)
+                .addToBackStack(null).commit();
     }
 }
