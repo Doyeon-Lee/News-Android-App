@@ -95,6 +95,7 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
         }else super.onBackPressed();
     }
 
+
     public void replaceFragment(Fragment fragment){
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment)
                 .addToBackStack(null).commit();

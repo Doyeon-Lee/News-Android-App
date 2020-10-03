@@ -62,7 +62,6 @@ public class ProfileFragment extends Fragment {
                 ((NavigationActivity)getActivity()).replaceFragment(SettingFragment.newInstance());
             }
         });
-
         return v;
     }
 }

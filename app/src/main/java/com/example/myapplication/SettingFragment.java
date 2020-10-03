@@ -49,7 +49,6 @@ public class SettingFragment extends Fragment {
             category = getArguments().getString("CATEGORY");
         }
     }
-
      */
 
     @Override
