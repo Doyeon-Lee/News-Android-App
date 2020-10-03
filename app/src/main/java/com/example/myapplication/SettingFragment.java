@@ -32,21 +32,31 @@ public class SettingFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter mAdapter;
     private RequestQueue queue;
+    private static String category = "default";
 
     public static SettingFragment newInstance(){
-        return new SettingFragment();
+        SettingFragment settingFragment = new SettingFragment();
+        if (settingFragment.getArguments() != null) {
+            category = settingFragment.getArguments().getString("CATEGORY");
+        }
+        return settingFragment;
     }
+
+    /*
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            category = getArguments().getString("CATEGORY");
+        }
+    }
+
+     */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.activity_news, container, false);
-
-        Bundle bundle = getArguments();
-        String category = "default";
-
-        if(bundle != null) category = bundle.getString("category");
 
         TextView_category = v.findViewById(R.id.TextView_category);
         RecyclerView_news = v.findViewById(R.id.RecyclerView_news);
@@ -76,7 +86,6 @@ public class SettingFragment extends Fragment {
         queue = Volley.newRequestQueue(getActivity());
         getNews(url);
 
-        ((NavigationActivity)getActivity()).replaceFragment();
         return v;
     }
 

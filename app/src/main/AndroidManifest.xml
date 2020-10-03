@@ -30,7 +30,7 @@
         <activity android:name=".CategoryActivity" />
         <activity android:name=".NewsActivity" />
         <activity android:name=".ViewNewsActivity" />
-        <activity android:name=".NavigationActivity"/>
+        <activity android:name=".NavigationActivity" />
     </application>
 
 </manifest>
