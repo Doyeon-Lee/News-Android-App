@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 input_password = TextInputEditText_password.getText().toString();
 
                 if(validation()){
-                    Intent loginSuccess = new Intent(MainActivity.this, CategoryActivity.class);
+                    Intent loginSuccess = new Intent(MainActivity.this, NavigationActivity.class);
                     startActivity(loginSuccess);
                 }
                 else{

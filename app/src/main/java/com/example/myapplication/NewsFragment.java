@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,36 +25,36 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingFragment extends Fragment {
+public class NewsFragment extends Fragment {
     private TextView TextView_category;
     private RecyclerView RecyclerView_news;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter mAdapter;
     private RequestQueue queue;
+
+    private static final String CATEGORY = "CATEGORY";
     private static String category = "default";
 
-    public static SettingFragment newInstance(){
-        SettingFragment settingFragment = new SettingFragment();
-        if (settingFragment.getArguments() != null) {
-            category = settingFragment.getArguments().getString("CATEGORY");
-        }
-        return settingFragment;
+    public static NewsFragment newInstance(String arg){
+        NewsFragment fragment = new NewsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(CATEGORY, arg);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
-    /*
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            category = getArguments().getString("CATEGORY");
-        }
+        if (getArguments() != null)
+            category = getArguments().getString(CATEGORY);
     }
-     */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.activity_news, container, false);
+        View v = inflater.inflate(R.layout.fragment_news, container, false);
 
         TextView_category = v.findViewById(R.id.TextView_category);
         RecyclerView_news = v.findViewById(R.id.RecyclerView_news);
@@ -122,9 +121,21 @@ public class SettingFragment extends Fragment {
                                         Object obj = v.getTag();
                                         if(obj != null){
                                             int position = (int)obj;
+                                            /*
                                             Intent newsClickIntent = new Intent(getActivity(), ViewNewsActivity.class);
                                             newsClickIntent.putExtra("clickNewsData", news.get(position));
                                             startActivity(newsClickIntent);
+                                             */
+                                            String sendUrl = news.get(position).getNewsUrl();
+
+                                            Bundle newClickBundle = new Bundle();
+                                            newClickBundle.putString("clickNewsData", sendUrl);
+                                            ViewNewsFragment fragment = new ViewNewsFragment();
+                                            fragment.setArguments(newClickBundle);
+
+                                            getActivity().getSupportFragmentManager().beginTransaction()
+                                                    .addToBackStack(null).replace(R.id.fragment_container,
+                                                    ViewNewsFragment.newInstance(sendUrl)).commit();
                                         }
                                     }
                                 });

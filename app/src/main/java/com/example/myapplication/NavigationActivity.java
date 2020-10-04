@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -51,11 +49,9 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
 
         //화면 방향 전환 등이 일어났을 때 보던 프래그먼트를 그대로 보여주기 위해서
         if (savedInstanceState == null) {
-            //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-            //        new ProfileFragment()).commit(); replace와 add으 차이 빼곤 같은걸까?
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container,
-                    ProfileFragment.newInstance()).commit(); //예시에는 commit없었는데 왜일까?
-            navigationView.setCheckedItem(R.id.nav_profile);
+                    CategoryFragment.newInstance()).commit();
+            navigationView.setCheckedItem(R.id.nav_home);
         }
     }
 
@@ -63,9 +59,9 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
     //here we pass the menu item which is the menu that was selected
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()){
-            case R.id.nav_profile:
+            case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ProfileFragment()).commit();
+                        new CategoryFragment()).commit();
                 break;
             case R.id.nav_bookmark:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -73,7 +69,7 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
                 break;
             case R.id.nav_setting:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new SettingFragment()).commit();
+                        new NewsFragment()).commit();
                 break;
             case R.id.nav_share:
                 Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show();
@@ -83,6 +79,7 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
                 break;
         }
 
+        getSupportFragmentManager().beginTransaction().addToBackStack(null).commit();
         DrawerLayout_nav.closeDrawer(GravityCompat.START);
         return true;
         //return false means that no item was selected even though the action was triggered
@@ -93,11 +90,5 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
         if(DrawerLayout_nav.isDrawerOpen(GravityCompat.START)){
             DrawerLayout_nav.closeDrawer(GravityCompat.START);
         }else super.onBackPressed();
-    }
-
-
-    public void replaceFragment(Fragment fragment){
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment)
-                .addToBackStack(null).commit();
     }
 }

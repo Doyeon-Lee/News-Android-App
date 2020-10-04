@@ -1,39 +1,35 @@
 package com.example.myapplication;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ProfileFragment extends Fragment {
+public class CategoryFragment extends Fragment {
     LinearLayout LinearLayout_listView;
     ListView ListView_category;
 
-    public static ProfileFragment newInstance(){
-        return new ProfileFragment();
+    public static CategoryFragment newInstance(){
+        return new CategoryFragment();
     }
 
     //기존에 구현해두었던 Action의 onCreate()의 내용을 onCreateView로 옮겨왔다
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.activity_category, container, false);
+        View v = inflater.inflate(R.layout.fragment_category, container, false);
 
         final ArrayList<String> categoryArray = new ArrayList<>(
                 Arrays.asList("Business", "Entertainment", "General", "Health", "Science", "Sports", "Technology")
@@ -57,9 +53,11 @@ public class ProfileFragment extends Fragment {
 
                 Bundle bundle = new Bundle();
                 bundle.putString("category", category);
-                Fragment fragment = new SettingFragment();
+                Fragment fragment = new NewsFragment();
                 fragment.setArguments(bundle);
-                ((NavigationActivity)getActivity()).replaceFragment(SettingFragment.newInstance());
+
+                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                        .replace(R.id.fragment_container, NewsFragment.newInstance(category)).commit();
             }
         });
         return v;

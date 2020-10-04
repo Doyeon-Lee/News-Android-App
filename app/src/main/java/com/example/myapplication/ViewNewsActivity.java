@@ -3,19 +3,12 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.facebook.drawee.view.SimpleDraweeView;
 
 public class ViewNewsActivity extends AppCompatActivity {
 /*
@@ -30,7 +23,7 @@ public class ViewNewsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_news);
+        setContentView(R.layout.fragment_view_news);
 
         //WebView를 사용하여 앱 내부에서 기사를 보여주는 방법
         webView = findViewById(R.id.webView);
@@ -59,6 +52,11 @@ public class ViewNewsActivity extends AppCompatActivity {
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE); //브라우저 캐시 허용 여부
         webSettings.setDomStorageEnabled(true); //로컬 저장소 허용 여부
          */
+        //false setting이 많은 경우 webView에서 동영상 재생이 원활하지 않을 수 있다
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        webSettings.setAllowFileAccess(true);
+        //webSettings.setAllowFileAccessFromFileURLs(true);
+        //webSettings.setAllowUniversalAccessFromFileURLs(true);
         webView.loadUrl(url);
 
         //아래는 webView가 아니라, url정보를 직렬화로 받아 intent를 사용해 외부 크롬으로 연결해주는 방법
