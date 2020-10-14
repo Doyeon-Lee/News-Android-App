@@ -12,22 +12,18 @@
             android:id="@+id/nav_bookmark"
             android:icon="@drawable/ic_bookmark"
             android:title="Bookmark" />
-        <item
-            android:id="@+id/nav_setting"
-            android:icon="@drawable/ic_setting"
-            android:title="Setting" />
     </group>
 
-    <item android:title="Communication">
+    <item android:title="Setting">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_share"
-                android:title="Share" />
+                android:id="@+id/nav_language"
+                android:icon="@drawable/ic_language"
+                android:title="Language" />
             <item
-                android:id="@+id/nav_contact"
-                android:icon="@drawable/ic_message"
-                android:title="Contact" />
+                android:id="@+id/nav_password"
+                android:icon="@drawable/ic_password"
+                android:title="Password" />
         </menu>
     </item>
 

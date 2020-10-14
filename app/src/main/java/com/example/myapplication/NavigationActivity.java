@@ -2,13 +2,20 @@ package com.example.myapplication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -58,7 +65,7 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
     @Override
     //here we pass the menu item which is the menu that was selected
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        switch (menuItem.getItemId()){
+        switch (menuItem.getItemId()) {
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new CategoryFragment()).commit();
@@ -67,15 +74,11 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new BookmarkFragment()).commit();
                 break;
-            case R.id.nav_setting:
+            case R.id.nav_language:
+                break;
+            case R.id.nav_password:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new NewsFragment()).commit();
-                break;
-            case R.id.nav_share:
-                Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_contact:
-                Toast.makeText(this, "Contact", Toast.LENGTH_SHORT).show();
+                        new PasswordFragment()).commit();
                 break;
         }
 
@@ -87,8 +90,8 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
 
     @Override
     public void onBackPressed() {
-        if(DrawerLayout_nav.isDrawerOpen(GravityCompat.START)){
+        if (DrawerLayout_nav.isDrawerOpen(GravityCompat.START)) {
             DrawerLayout_nav.closeDrawer(GravityCompat.START);
-        }else super.onBackPressed();
+        } else super.onBackPressed();
     }
 }

@@ -3,8 +3,10 @@ package com.example.myapplication;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -19,30 +21,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
 
 import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity {
-    TextInputEditText TextInputEditText_email, TextInputEditText_password;
-    TextView TextView_signUp;
-    RelativeLayout RelativeLayout_login;
+    private TextInputEditText TextInputEditText_email, TextInputEditText_password;
+    private TextView TextView_signUp;
+    private RelativeLayout RelativeLayout_login;
 
-    public class User{
-        String email = "abcd@gmail.com";
-        String password = "1234";
-        Vector<Object> v;
-    }
-    User user = new User();
+    private SharedPreferences mPreferences;
+    private String SharedPrefFile = "UserData";
+    public User user = new User();
 
-    String input_email = "";
-    String input_password = "";
+    private String input_email = "";
+    private String input_password = "";
     long lastTimeBackPressed = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         //리소스R의 id라는 녀석이 TextInputEditText_email이었어
         TextInputEditText_email = findViewById(R.id.TextInputEditText_email);
@@ -73,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
          */
+        loadData();
 
         RelativeLayout_login.setClickable(true);
         RelativeLayout_login.setOnClickListener(new View.OnClickListener() {
@@ -81,11 +81,10 @@ public class MainActivity extends AppCompatActivity {
                 input_email = TextInputEditText_email.getText().toString();
                 input_password = TextInputEditText_password.getText().toString();
 
-                if(validation()){
+                if (validation()) {
                     Intent loginSuccess = new Intent(MainActivity.this, NavigationActivity.class);
                     startActivity(loginSuccess);
-                }
-                else{
+                } else {
                     String loginFail = "The password is incorrect or the email doesn't exist.";
                     Toast toast = Toast.makeText(MainActivity.this, loginFail, Toast.LENGTH_SHORT);
                     toast.show();
@@ -103,17 +102,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public boolean validation(){
-        if(input_email.equals(user.email) && input_password.equals(user.password))
+    public boolean validation() {
+        if (input_email.equals(user.getEmail()) && input_password.equals(user.getPassword()))
             return true;
         else return false;
     }
 
-    public void alertSignUp(){
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+    public void alertSignUp() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        alert.setTitle("Sign Up");
-        alert.setMessage("Enter your email and password");
+        builder.setTitle("Sign Up");
+        builder.setMessage("Enter your email and password");
 
         //alert는 하나의 뷰만을 담을 수 있다. 따라서 두 개의 edittext를 표시하려면
         //별도의 view에 포함시켜야 한다. 아래는 xml을 사용하지 않고 linearLayout을 만드는 방법이다.
@@ -145,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
         layout.addView(EditText_password);
 
         //비밀번호는 디폴트로 보이지 않게 한다
-        EditText_password.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        EditText_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
         //비밀번호의 visible을 변경하는 체크박스 추가
         final CheckBox checkBox = new CheckBox(this);
@@ -157,8 +156,10 @@ public class MainActivity extends AppCompatActivity {
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(checkBox.isChecked()) EditText_password.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                else EditText_password.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                if (checkBox.isChecked())
+                    EditText_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                else
+                    EditText_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
                 EditText_password.setSelection(EditText_password.getText().length());
             }
@@ -167,23 +168,27 @@ public class MainActivity extends AppCompatActivity {
         layout.addView(checkBox);
 
         //생성한 LinearLayout을 alert로 표시
-        alert.setView(layout);
+        builder.setView(layout);
 
-        alert.setPositiveButton("Sign Up", new DialogInterface.OnClickListener() {
+
+        builder.setPositiveButton("Sign Up", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                user.email = EditText_email.getText().toString();
-                user.password = EditText_password.getText().toString();
+                //User user = new User();
+                user.setEmail(EditText_email.getText().toString());
+                user.setPassword(EditText_password.getText().toString());
+                saveData();
             }
         });
 
+        AlertDialog alert = builder.create();
         alert.show();
     }
 
     @Override
     public void onBackPressed() {
         String endString = "'뒤로' 버튼을 한 번 더 누르면 앱을 종료합니다.";
-        if(System.currentTimeMillis() - lastTimeBackPressed < 2000)
+        if (System.currentTimeMillis() - lastTimeBackPressed < 2000)
             finish();
             //super.onBackPressed();
         else {
@@ -191,4 +196,30 @@ public class MainActivity extends AppCompatActivity {
             lastTimeBackPressed = System.currentTimeMillis();
         }
     }
+
+    public void saveData() {
+        //- SharedPreferences 객체에 edit()라는 메소드로 Editor 생성 --> put 메소드로 데이터 입력
+        //- apply()메소드로 적용
+        mPreferences = getSharedPreferences(SharedPrefFile, MODE_PRIVATE);
+        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+
+        //데이터입력
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+        preferencesEditor.putString("MyObject", json);
+
+        //적용
+        preferencesEditor.apply();
+    }
+
+    public void loadData() {
+        //Shared Preferences 객체 선언
+        mPreferences = getSharedPreferences(SharedPrefFile, MODE_PRIVATE);
+
+        //Activity가 재생성 될때 onCreate()에서 SharedPreferences 객체에서 데이터 불러오기
+        Gson gson = new Gson();
+        String json = mPreferences.getString("MyObject", "");
+        if(!json.equals("null")) user = gson.fromJson(json, User.class);
+    }
+
 }
