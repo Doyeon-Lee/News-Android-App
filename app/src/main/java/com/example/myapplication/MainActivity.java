@@ -7,12 +7,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -24,6 +26,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 
 import java.util.Vector;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
     private TextInputEditText TextInputEditText_email, TextInputEditText_password;
@@ -117,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         //alert는 하나의 뷰만을 담을 수 있다. 따라서 두 개의 edittext를 표시하려면
         //별도의 view에 포함시켜야 한다. 아래는 xml을 사용하지 않고 linearLayout을 만드는 방법이다.
         //레이아웃 생성
-        LinearLayout layout = new LinearLayout(this);
+        final LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
 
         //레이아웃 파라미터 생성
@@ -167,22 +170,34 @@ public class MainActivity extends AppCompatActivity {
 
         layout.addView(checkBox);
 
+        final TextView warning = new TextView(this);
+        warning.setText("올바른 값을 입력해주세요.\n특수문자는 !@#$%^&*만 사용 가능합니다.");
+        warning.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+        warning.setVisibility(View.INVISIBLE);
+        layout.addView(warning);
+
         //생성한 LinearLayout을 alert로 표시
         builder.setView(layout);
+        builder.setPositiveButton("Sign Up", null);
+        final AlertDialog alert = builder.create();
+        alert.show();
 
-
-        builder.setPositiveButton("Sign Up", new DialogInterface.OnClickListener() {
+        Button signUpButton = alert.getButton(AlertDialog.BUTTON_POSITIVE);
+        signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //User user = new User();
-                user.setEmail(EditText_email.getText().toString());
-                user.setPassword(EditText_password.getText().toString());
-                saveData();
+            public void onClick(View v) {
+                input_email = EditText_email.getText().toString();
+                input_password = EditText_password.getText().toString();
+                if (isEmail(input_email) && isPassword(input_password)) {
+                    user.setEmail(input_email);
+                    user.setPassword(input_password);
+                    saveData();
+                    alert.dismiss();
+                } else
+                    warning.setVisibility(View.VISIBLE);
             }
         });
 
-        AlertDialog alert = builder.create();
-        alert.show();
     }
 
     @Override
@@ -222,4 +237,11 @@ public class MainActivity extends AppCompatActivity {
         if(!json.equals("null")) user = gson.fromJson(json, User.class);
     }
 
+    public boolean isEmail(String str) {
+        return Pattern.matches("^[a-z0-9A-Z._-]*@[a-z0-9A-Z]*.[a-zA-Z.]*$", str);
+    }
+
+    public boolean isPassword(String str) {
+        return Pattern.matches("^[a-z0-9A-Z!@#$%^&*]*$", str);
+    }
 }

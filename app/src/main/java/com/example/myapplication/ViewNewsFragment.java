@@ -58,6 +58,10 @@ public class ViewNewsFragment extends Fragment {
         webSettings.setLoadWithOverviewMode(true); //로드할 페이지가 화면보다 크다면 크기 맞춤
         webSettings.setSupportZoom(true); //줌 가능하도록
         webSettings.setDomStorageEnabled(true); //로컬 저장소에 허용할지 여부
+        webSettings.setUseWideViewPort(true); //화면 사이즈 맞추기 허용 여부
+        webSettings.setSupportZoom(true); //화면 줌 허용 여부
+        webSettings.setBuiltInZoomControls(true); //화면 확대 축소 허용 여부
+        webSettings.setDisplayZoomControls(false);
 
         //false setting이 많은 경우 webView에서 동영상 재생이 원활하지 않을 수 있다
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
