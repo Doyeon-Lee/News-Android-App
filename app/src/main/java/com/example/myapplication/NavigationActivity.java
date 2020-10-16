@@ -7,11 +7,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -24,6 +26,7 @@ import com.google.android.material.navigation.NavigationView;
 public class NavigationActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Toolbar toolbar;
     private DrawerLayout DrawerLayout_nav;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +51,7 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
         //This will take care of rotating the hamburger icon together with the drawer itself
 
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         //괄호 안에 new~로 생성할 수도 있지만 가독성을 위해 this 액티비티를 인수로 전달한다.
         //그러기 위해서는 클래스에ㅔ implement Nav~Listener가 필요한데, 두 가지 중 buttom이
@@ -85,6 +88,7 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
 
         //getSupportFragmentManager().beginTransaction().addToBackStack(null).commit();
         DrawerLayout_nav.closeDrawer(GravityCompat.START);
+        menuItem.setChecked(false);
         return true;
         //return false means that no item was selected even though the action was triggered
     }
@@ -100,7 +104,30 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
             if(fragmentManager.getBackStackEntryCount() > 0)
                 fragmentManager.popBackStack();
              */
+            navigationView.getCheckedItem().setChecked(false);
             super.onBackPressed();
+            navigationView.getMenu().getItem(menuIdx()).setChecked(true);
         }
+    }
+
+    public int menuIdx(){
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+
+        int res = 0;
+        switch (fragment.getId()) {
+            case R.id.nav_home:
+                res = 0;
+                break;
+            case R.id.nav_bookmark:
+                res = 1;
+                break;
+            case R.id.nav_language:
+               res = 2;
+                break;
+            case R.id.nav_password:
+                res= 3;
+                break;
+        }
+        return res;
     }
 }
