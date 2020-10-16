@@ -56,7 +56,7 @@ public class CategoryFragment extends Fragment {
                 Fragment fragment = new NewsFragment();
                 fragment.setArguments(bundle);
 
-                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                getActivity().getSupportFragmentManager().beginTransaction()//.addToBackStack(null)
                         .replace(R.id.fragment_container, NewsFragment.newInstance(category)).commit();
             }
         });

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -68,17 +69,17 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
         switch (menuItem.getItemId()) {
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new CategoryFragment()).commit();
+                        new CategoryFragment()).addToBackStack(null).commit();
                 break;
             case R.id.nav_bookmark:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new BookmarkFragment()).commit();
+                        new BookmarkFragment()).addToBackStack(null).commit();
                 break;
             case R.id.nav_language:
                 break;
             case R.id.nav_password:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new PasswordFragment()).commit();
+                        new PasswordFragment()).addToBackStack(null).commit();
                 break;
         }
 
@@ -92,6 +93,12 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
     public void onBackPressed() {
         if (DrawerLayout_nav.isDrawerOpen(GravityCompat.START)) {
             DrawerLayout_nav.closeDrawer(GravityCompat.START);
-        } else super.onBackPressed();
+        }
+        else{
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            if(fragmentManager.getBackStackEntryCount() > 0)
+                fragmentManager.popBackStack();
+            super.onBackPressed();
+        }
     }
 }
