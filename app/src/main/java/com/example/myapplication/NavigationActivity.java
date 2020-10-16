@@ -83,7 +83,7 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
                 break;
         }
 
-        getSupportFragmentManager().beginTransaction().addToBackStack(null).commit();
+        //getSupportFragmentManager().beginTransaction().addToBackStack(null).commit();
         DrawerLayout_nav.closeDrawer(GravityCompat.START);
         return true;
         //return false means that no item was selected even though the action was triggered
@@ -95,9 +95,11 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
             DrawerLayout_nav.closeDrawer(GravityCompat.START);
         }
         else{
+            /*
             FragmentManager fragmentManager = getSupportFragmentManager();
             if(fragmentManager.getBackStackEntryCount() > 0)
                 fragmentManager.popBackStack();
+             */
             super.onBackPressed();
         }
     }
