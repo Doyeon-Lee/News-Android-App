@@ -3,64 +3,59 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:fitsSystemWindows="true"
-    >
+    android:orientation="vertical">
+
     <TextView
         android:id="@+id/TextView_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="LOGIN"
-        android:textSize="40sp"
-        android:textStyle="bold"
+        android:background="#F38863CA"
         android:gravity="center"
         android:padding="12sp"
+        android:text="LOGIN"
         android:textColor="#ffffff"
-        android:background="#F38863CA"
+        android:textSize="40sp"
+        android:textStyle="bold"
         />
 
     <ImageView
         android:id="@+id/icon_present"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_login"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        />
+        android:src="@drawable/icon_login" />
 
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/icon_present"
-        android:layout_marginBottom="6dp"
-        >
+        android:layout_marginBottom="6dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/TextInputEditText_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="email"
-            android:textSize="20sp"
             android:inputType="textEmailAddress"
-            />
+            android:textSize="20sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/TextInput_email"
-        android:layout_marginBottom="6dp"
-        >
+        android:layout_marginBottom="6dp">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/TextInputEditText_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="password"
-            android:textSize="20sp"
             android:inputType="textPassword"
             android:maxLength="12"
-            />
+            android:textSize="20sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,21 +64,19 @@
         android:id="@+id/RelativeLayout_login"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:background="@drawable/button_purple"
         android:layout_margin="16sp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
+        android:background="@drawable/button_purple"
         android:clickable="true"
-        >
+        android:orientation="horizontal"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
 
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/icon_user"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            />
+            android:src="@drawable/icon_user" />
 
         <TextView
             android:layout_width="352dp"
@@ -92,10 +85,9 @@
             android:gravity="center"
             android:text="Login"
             android:textColor="#ffffff"
-            android:textSize="30sp"
-            />
+            android:textSize="30sp" />
     </RelativeLayout>
-<!--
+    <!--
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -135,26 +127,24 @@
             android:textSize="30sp" />
 
     </RelativeLayout>
--->
+    -->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="2"
-        >
+        android:weightSum="2">
 
         <TextView
             android:id="@+id/TextView_signUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="sign up"
-            android:textSize="25sp"
-            android:textColor="#2196F3"
+            android:layout_marginLeft="15sp"
             android:layout_weight="1"
             android:gravity="center"
-            android:layout_marginLeft="15sp"
-            />
+            android:text="sign up"
+            android:textColor="#2196F3"
+            android:textSize="25sp" />
 
         <TextView
             android:id="@+id/TextView_findPassword"
@@ -165,8 +155,7 @@
             android:gravity="center"
             android:text="find password"
             android:textColor="#2196F3"
-            android:textSize="25sp"
-            />
+            android:textSize="25sp" />
 
     </LinearLayout>
 

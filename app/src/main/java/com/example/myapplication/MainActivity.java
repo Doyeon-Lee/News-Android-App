@@ -14,6 +14,7 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     public static Context mcontext;
 
     private TextInputEditText TextInputEditText_email, TextInputEditText_password;
-    private TextView TextView_signUp;
+    private TextView TextView_signUp, TextView_login;
     private RelativeLayout RelativeLayout_login;
 
     private static SharedPreferences mPreferences;
@@ -49,35 +50,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mcontext = this;
 
-        //리소스R의 id라는 녀석이 TextInputEditText_email이었어
         TextInputEditText_email = findViewById(R.id.TextInputEditText_email);
         TextInputEditText_password = findViewById(R.id.TextInputEditText_password);
         RelativeLayout_login = findViewById(R.id.RelativeLayout_login);
         TextView_signUp = findViewById(R.id.TextView_signUp);
+        TextView_login = findViewById(R.id.TextView_login);
         RelativeLayout_login.setClickable(false);
 
-        /*
-        TextInputEditText_email.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
+        //직접 dp를 px로 변환하는 식도 가능하지만, dimens.xml에 원하는 dp값을 선언하여 아래와 같이 사용한다
+        int val = this.getResources().getDimensionPixelSize(R.dimen.status_bar_padding);
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                //charSequence: 입력값(매 char마다), i: length, i1: 입력중인가, i2: 지우는중인가 1/0
-                if(charSequence != null) {
-                    input_email = charSequence.toString();
-                    RelativeLayout_login.setClickable(validation());
-                }
-            }
+        // Status Bar 높이만큼 Padding 부여   
+        // 코드에서 setPadding은 px단위만 가능하기 때문에 xml의 dp와는 다르다 
+        TextView_login.setPadding(0, getStatusBarHeight()+val, 0, val);
 
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-         */
         loadData();
 
         RelativeLayout_login.setClickable(true);
@@ -248,4 +235,13 @@ public class MainActivity extends AppCompatActivity {
         return Pattern.matches("^[a-z0-9A-Z!@#$%^&*]*$", str) && str.length() >= 6;
     }
 
+    //status bar의 높이 계산; 기기별로 높이가 다를 수 있으므로
+    public int getStatusBarHeight(){
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0)
+            result = getResources().getDimensionPixelSize(resourceId);
+
+        return result;
+    }
 }

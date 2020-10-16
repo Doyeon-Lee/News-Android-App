@@ -68,6 +68,7 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
                     CategoryFragment.newInstance()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
         }
+
     }
 
     @Override
