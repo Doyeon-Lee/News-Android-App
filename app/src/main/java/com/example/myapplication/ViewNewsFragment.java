@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -44,6 +45,10 @@ public class ViewNewsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_view_news, container, false);
+        ((NavigationActivity) getActivity()).getSupportActionBar().hide();
+
+        DrawerLayout mDrawerLayout = ((NavigationActivity) getActivity()).getDrawerLayout();
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         //WebView를 사용하여 앱 내부에서 기사를 보여주는 방법
         webView = view.findViewById(R.id.webView);

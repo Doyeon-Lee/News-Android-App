@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,6 +56,9 @@ public class NewsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_news, container, false);
+        ((NavigationActivity) getActivity()).getSupportActionBar().show();
+        DrawerLayout mDrawerLayout = ((NavigationActivity) getActivity()).getDrawerLayout();
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 
         TextView_category = v.findViewById(R.id.TextView_category);
         RecyclerView_news = v.findViewById(R.id.RecyclerView_news);

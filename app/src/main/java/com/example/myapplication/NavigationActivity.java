@@ -28,6 +28,10 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
     private DrawerLayout DrawerLayout_nav;
     private NavigationView navigationView;
 
+    public DrawerLayout getDrawerLayout(){
+        return DrawerLayout_nav;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
