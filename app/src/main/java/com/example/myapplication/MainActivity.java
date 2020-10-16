@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static SharedPreferences mPreferences;
     private static String SharedPrefFile = "UserData";
-    public static User user = new User();
+    public static User user;
 
     private String input_email = "";
     private String input_password = "";
@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         TextView_login = findViewById(R.id.TextView_login);
         RelativeLayout_login.setClickable(false);
 
-
         //직접 dp를 px로 변환하는 식도 가능하지만, dimens.xml에 원하는 dp값을 선언하여 아래와 같이 사용한다
         int val = this.getResources().getDimensionPixelSize(R.dimen.status_bar_padding);
 
@@ -66,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
         TextView_login.setPadding(0, getStatusBarHeight()+val, 0, val);
 
         loadData();
+
+        user = new User();
 
         RelativeLayout_login.setClickable(true);
         RelativeLayout_login.setOnClickListener(new View.OnClickListener() {
@@ -96,9 +97,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean validation() {
-        if (input_email.equals(user.getEmail()) && input_password.equals(user.getPassword()))
-            return true;
-        else return false;
+        try {
+            if (input_email.equals(user.getEmail()) && input_password.equals(user.getPassword()))
+                return true;
+            else return false;
+        }catch (NullPointerException e){
+            e.printStackTrace(); //오류 출력(방법은 여러가지)
+            Toast.makeText(mcontext, "NPE Error", Toast.LENGTH_SHORT).show();
+        }
+        return false;
     }
 
     public void alertSignUp() {
