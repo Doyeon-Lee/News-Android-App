@@ -4,6 +4,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="password_qualification">비밀번호는 6자 이상이어야 합니다.\n특수문자는 !@#$%^&amp;*만 사용 가능합니다.</string>
 
     <string-array name="language">
         <item>KR</item>

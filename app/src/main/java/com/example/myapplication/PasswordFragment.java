@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -9,6 +10,7 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -52,10 +54,13 @@ public class PasswordFragment extends Fragment {
         EditText_new_pw2 = v.findViewById(R.id.EditText_new_pw2);
         TextView_warning = v.findViewById(R.id.TextView_warning);
         TextView_warning2 = v.findViewById(R.id.TextView_warning2);
+        TextView_warning3 = v.findViewById(R.id.TextView_warning3);
         Button_submit = v.findViewById(R.id.Button_submit);
         ToggleButton_pw1 = v.findViewById(R.id.ToggleButton_pw1);
         ToggleButton_pw2 = v.findViewById(R.id.ToggleButton_pw2);
         ToggleButton_pw3 = v.findViewById(R.id.ToggleButton_pw3);
+
+        TextView_warning3.setText(R.string.password_qualification);
 
         ToggleButton_pw1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
             @Override
@@ -96,9 +101,7 @@ public class PasswordFragment extends Fragment {
                 String new_pw2 = EditText_new_pw2.getText().toString();
                 boolean flag;
 
-                //String password = ((MainActivity)getActivity()).user.getPassword();
-                //User user = ((MainActivity)getActivity()).user;
-                String password = "";
+                String password = MainActivity.user.getPassword();
 
                 if(original_pw.equals(password)){
                     flag = true;
@@ -116,9 +119,21 @@ public class PasswordFragment extends Fragment {
                     TextView_warning2.setVisibility(View.VISIBLE);
                 }
 
-                if(flag){ //비밀번호 변경 성공
-                    Toast.makeText(getActivity(), "SUCCESS", Toast.LENGTH_SHORT).show();
+                if(MainActivity.isPassword(new_pw))
+                    TextView_warning3.setVisibility(View.INVISIBLE);
+                else{
+                    flag = false;
+                    TextView_warning3.setVisibility(View.VISIBLE);
                 }
+
+                if(flag){ //비밀번호 변경 성공
+                    MainActivity.user.setPassword(new_pw);
+                    MainActivity.saveData();
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
+
+                InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
             }
         });
 

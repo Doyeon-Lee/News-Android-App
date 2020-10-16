@@ -29,13 +29,15 @@ import java.util.Vector;
 import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
+    public static Context mcontext;
+
     private TextInputEditText TextInputEditText_email, TextInputEditText_password;
     private TextView TextView_signUp;
     private RelativeLayout RelativeLayout_login;
 
-    private SharedPreferences mPreferences;
-    private String SharedPrefFile = "UserData";
-    public User user = new User();
+    private static SharedPreferences mPreferences;
+    private static String SharedPrefFile = "UserData";
+    public static User user = new User();
 
     private String input_email = "";
     private String input_password = "";
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mcontext = this;
 
         //리소스R의 id라는 녀석이 TextInputEditText_email이었어
         TextInputEditText_email = findViewById(R.id.TextInputEditText_email);
@@ -171,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         layout.addView(checkBox);
 
         final TextView warning = new TextView(this);
-        warning.setText("올바른 값을 입력해주세요.\n특수문자는 !@#$%^&*만 사용 가능합니다.");
+        warning.setText(R.string.password_qualification);
         warning.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
         warning.setVisibility(View.INVISIBLE);
         layout.addView(warning);
@@ -212,10 +215,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void saveData() {
+    public static void saveData() {
         //- SharedPreferences 객체에 edit()라는 메소드로 Editor 생성 --> put 메소드로 데이터 입력
         //- apply()메소드로 적용
-        mPreferences = getSharedPreferences(SharedPrefFile, MODE_PRIVATE);
+        mPreferences = mcontext.getSharedPreferences(SharedPrefFile, Context.MODE_PRIVATE);
         SharedPreferences.Editor preferencesEditor = mPreferences.edit();
 
         //데이터입력
@@ -241,7 +244,8 @@ public class MainActivity extends AppCompatActivity {
         return Pattern.matches("^[a-z0-9A-Z._-]*@[a-z0-9A-Z]*.[a-zA-Z.]*$", str);
     }
 
-    public boolean isPassword(String str) {
-        return Pattern.matches("^[a-z0-9A-Z!@#$%^&*]*$", str);
+    public static boolean isPassword(String str) {
+        return Pattern.matches("^[a-z0-9A-Z!@#$%^&*]*$", str) && str.length() >= 6;
     }
+
 }
